@@ -59,35 +59,30 @@ function ChartComponent(props) {
                             text: 'Time'
                         }
                     },
-                    yAxes: [
-                        {
-                            id: 'temp-y-axis',
-                            type: 'linear',
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Temp (Cº)'
-                            }
-                        },
-                        {
-                            id: 'humidity-y-axis',
-                            type: 'linear',
-                            position: 'right',
-                            title: {
-                                display: true,
-                                text: 'Humidity (%)'
-                            }
-                        },
-                        {
-                            id: 'rain-y-axis',
-                            type: 'linear',
-                            position: 'right',
-                            title: {
-                                display: true,
-                                text: 'Rain (m)'
-                            }
-                        },
-                    ],
+                    'temp-y-axis': {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Temp (Cº)'
+                        }
+                    },
+                    'humidity-y-axis': {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Humidity (%)'
+                        }
+                    },
+                    'rain-y-axis': {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Rain (m)'
+                        }
+                    }
                 }
             }
         });
@@ -99,7 +94,7 @@ function ChartComponent(props) {
     }, [humidityData, rainData, tempData, timeData]);
 
     return (
-        <canvas className="flex justify-center items-center" ref={chartRef} />
+        <canvas className="" ref={chartRef} />
     );
 }
 

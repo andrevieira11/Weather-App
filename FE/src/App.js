@@ -94,6 +94,11 @@ function App() {
       setTempData(response.data.hourly.temperature_2m)
       setRainData(response.data.hourly.rain)
       setHumidityData(response.data.hourly.relative_humidity_2m)
+    } else {
+      setTimeData([])
+      setTempData([])
+      setRainData([])
+      setHumidityData([])
     }
     setLoading(false)
   }
@@ -135,8 +140,8 @@ function App() {
       </div>
       <div>
         {timeData?.length > 0 && (
-          <div className='flex flex-col justify-center'>
-            <div className='flex h-1/2 justify-center'>
+          <div className='flex flex-col justify-center items-center'>
+            <div className='flex w-1/2 justify-center'>
               <ChartComponent timeData={timeData} rainData={rainData} tempData={tempData} humidityData={humidityData} />
             </div>
             <div className='flex justify-center'>
