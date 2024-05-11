@@ -11,10 +11,9 @@ class LocationController < ApplicationController
       predictions = response["predictions"]
       main_texts = predictions.map { |prediction| prediction["structured_formatting"]["main_text"] }
       description = predictions.map { |prediction| prediction["description"] }
-      puts description
       render json: description
     else
-      puts "error"
+      puts "There was an error finding the location"
     end
   end
 end

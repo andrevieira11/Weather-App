@@ -1,5 +1,6 @@
 class WeatherController < ApplicationController
   include WeatherHelper
+  include LocationHelper
   def get_weather_data
     #parameters
     location = params[:location]
@@ -11,12 +12,14 @@ class WeatherController < ApplicationController
     results_temperature_array = []
     results_humidity_array = []
 
-    location_response = HTTParty.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{location}&key=AIzaSyC3aaOPMrHvR1-OL-rqFCOtZba5sRhn7F8")
-    lat = 0
-    long = 0
+    location_response = fetch_location_coordinates(location)
     if location_response["status"] == "OK"
       lat = location_response["results"][0]["geometry"]["location"]["lat"]
       long = location_response["results"][0]["geometry"]["location"]["lng"]
+    else
+      message = "No location found. Try using the suggestions!"
+      render json: message, status: :bad_request
+      return
     end
 
     parsed_start_time = DateTime.parse(start_date)

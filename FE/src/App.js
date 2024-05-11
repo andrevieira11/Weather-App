@@ -14,12 +14,14 @@ function App() {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
+  const [locationData, setLocationData] = useState("");
   const [timeData, setTimeData] = useState([]);
   const [rainData, setRainData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
   const [tempData, setTempData] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchSuggestions = async (inputValue) => {
     try {
@@ -85,16 +87,21 @@ function App() {
       end_date: `${endDateParts[3]}-${MONTH_MAP[endDateParts[1]]}-${endDateParts[2]}`
     }
     setLoading(true)
-    const response = await axios.get(
-      `http://127.0.0.1:3000/weather_data`, {
-      params: data
-    })
-    if (response.status === 200) {
-      setTimeData(response.data.hourly.time)
-      setTempData(response.data.hourly.temperature_2m)
-      setRainData(response.data.hourly.rain)
-      setHumidityData(response.data.hourly.relative_humidity_2m)
-    } else {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:3000/weather_data`, {
+        params: data
+      })
+      if (response.status === 200) {
+        setTimeData(response.data.hourly.time)
+        setTempData(response.data.hourly.temperature_2m)
+        setRainData(response.data.hourly.rain)
+        setHumidityData(response.data.hourly.relative_humidity_2m)
+        setLocationData(value)
+        setError("")
+      }
+    } catch (e) {
+      setError(e.response.data)
       setTimeData([])
       setTempData([])
       setRainData([])
@@ -145,9 +152,12 @@ function App() {
               <ChartComponent timeData={timeData} rainData={rainData} tempData={tempData} humidityData={humidityData} />
             </div>
             <div className='flex justify-center'>
-              <TableComponent location={value} timeData={timeData} rainData={rainData} tempData={tempData} humidityData={humidityData} />
+              <TableComponent location={locationData} timeData={timeData} rainData={rainData} tempData={tempData} humidityData={humidityData} />
             </div>
           </div>
+        )}
+        {error.length > 0 && (
+          <div className='flex text-2xl text-red-400 justify-center'>{error}</div>
         )}
       </div>
     </div >
